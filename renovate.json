@@ -1,0 +1,34 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    ":dependencyDashboard",
+    ":prConcurrentLimit10",
+    "schedule:weekends",
+    ":timezone(Europe/Berlin)"
+  ],
+  "pinDigests": true,
+  "packageRules": [
+    {
+      "description": "Removes the `v` prefix from the version",
+      "matchPackageNames": ["git-chglog/git-chglog"],
+      "extractVersion": "^v(?<version>.*)$",
+      "automerge": false
+    },
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
+    }
+  ],
+  "regexManagers": [
+    {
+      "fileMatch": ["^Dockerfile$"],
+      "matchStrings": [
+        "ENV\\s+CHGLOG_VERSION=(?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ],
+      "depNameTemplate": "git-chglog/git-chglog",
+      "datasourceTemplate": "github-releases"
+    }
+  ]
+}

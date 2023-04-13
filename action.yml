@@ -1,0 +1,38 @@
+name: "Generate CHANGELOG based on git-chglog"
+description: "Generates a changelog using git-chlog tool. Use output changelog to create a release."
+author: "Hans Mayer"
+branding:
+  icon: "shopping-cart"
+  color: "blue"
+
+inputs:
+  config_path:
+    description: "Configuration directory for git-chglog"
+    default: "/.chglog"
+    required: false
+
+  next_tag:
+    description: "Tag of next version"
+    required: true
+
+  output_file:
+    description: "The file, where the output should be written"
+    default: "CHANGELOG.md"
+    required: false
+
+  write_file:
+    description: "Output file should be written"
+    required: false
+
+outputs:
+  changelog:
+    description: "The CHANGELOG content"
+
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.config_path }}
+    - ${{ inputs.next_tag }}
+    - ${{ inputs.output_file }}
+    - ${{ inputs.write_file }}

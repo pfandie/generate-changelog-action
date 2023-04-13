@@ -1,0 +1,34 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  custom_test:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: read
+
+    name: Generate Release
+    steps:
+      - name: checkout
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3
+
+      - name: Generate Changelog
+        uses: ./
+        id: changelog
+
+      - name: Create Release
+        uses: ncipollo/release-action@a2e71bdd4e7dab70ca26a852f29600c98b33153e # v1.12.0
+        with:
+          makeLatest: true
+          token: ${{ github.token }}
+          body: ${{ steps.changelog.outputs.changelog }}
+          name: "Release ${{ github.ref_name }}"
+
+      - name: Create additional Major/Minor tags
+        uses: vweevers/additional-tags-action@3bab55b44e81186dcfef7db9f2cbca01a78eb710 # v2
