@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: pfandie/generate-changelog-action@v1
         with:
-          next_version: "${{ github.ref_name }}"
+          next_tag: "${{ github.ref_name }}"
 ```
 
 ### Generate CHANGELOG on `push` to `release` branches with previous tag

@@ -21,6 +21,8 @@ jobs:
       - name: Generate Changelog
         uses: ./
         id: changelog
+        with:
+          next_tag: ${{ github.ref_name }}
 
       - name: Create Release
         uses: ncipollo/release-action@a2e71bdd4e7dab70ca26a852f29600c98b33153e # v1.12.0
