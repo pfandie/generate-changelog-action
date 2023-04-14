@@ -12,8 +12,12 @@ inputs:
     required: false
 
   next_tag:
-    description: "Tag of next version"
+    description: "Tag of target version"
     required: true
+
+  old_tag:
+    description: "Tag of source version"
+    required: false
 
   output_file:
     description: "The file, where the output should be written"
@@ -34,5 +38,6 @@ runs:
   args:
     - ${{ inputs.config_path }}
     - ${{ inputs.next_tag }}
+    - ${{ inputs.old_tag }}
     - ${{ inputs.output_file }}
     - ${{ inputs.write_file }}

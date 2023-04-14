@@ -2,10 +2,16 @@
 
 set -e
 
-# Check if required NEXT_TAG input is set
+# Check if NEXT_TAG input is set
 if [[ -n "$INPUT_NEXT_TAG" ]]; then
   echo "ℹ️ Set next Tag to $INPUT_NEXT_TAG"
-  next_tag="--next-tag '$INPUT_NEXT_TAG'"
+  next_tag="$INPUT_NEXT_TAG"
+fi
+
+# Check if OLD_TAG input is set
+if [[ -n "$INPUT_NEXT_TAG" && -n "$INPUT_OLD_TAG" ]]; then
+  echo "ℹ️ Set old Tag to $INPUT_OLD_TAG"
+  next_tag="$INPUT_NEXT_TAG..$INPUT_OLD_TAG"
 fi
 
 # Set Output file
@@ -19,6 +25,7 @@ git config --global --add safe.directory "${GITHUB_WORKSPACE}"
 
 # Generate CHANGELOG based on settings
 echo "🔖 Generating CHANGELOG"
+echo "command: /usr/local/bin/git-chglog -c '$INPUT_CONFIG_PATH/config.yml' '$next_tag' '$output_file')"
 changelog=$(/usr/local/bin/git-chglog -c "${INPUT_CONFIG_PATH}/config.yml" "$next_tag" "$output_file")
 
 # Print CHANGELOG to stdout
