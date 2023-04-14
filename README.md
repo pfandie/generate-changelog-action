@@ -30,7 +30,7 @@ jobs:
           next_version: "${{ github.ref_name }}"
 ```
 
-### Generate CHANGELOG on `push` to `release` branches
+### Generate CHANGELOG on `push` to `release` branches with previous tag
 
 ```yaml
 name: Build and Release
@@ -52,6 +52,15 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get previous tag
+        id: previousTag
+        run: |
+          name=$(git describe --abbrev=0 --tags $(git rev-list --tags --skip=1 --max-count=1))
+          echo "previousTag: $name"
+          echo "previousTag=$name" >> $GITHUB_ENV
 
       - name: Generate Changelog
         uses: pfandie/generate-changelog-action@v1
@@ -59,6 +68,7 @@ jobs:
         with:
           config_path:
           next_tag: "${{ github.ref_name }}"
+          old_tag: "${{ env.previousTag }}"
           output_file: "MyChangelog.md"
           write_file: true
 ```
@@ -85,6 +95,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Generate Changelog
         uses: pfandie/generate-changelog-action@v1
@@ -105,11 +117,23 @@ jobs:
 |---------------|------------------------------------------------------------------|--------------------|----------------|
 | `config_path` | Path to config directory. Defaults to: `.chglog`                 | :x:                | `null`         |
 | `next_tag`    | The next tag for version number, e.g. `"${{ github.ref_name }}"` | :white_check_mark: | `null`         |
+| `old_tag`     | The previous tag to get only the changelog diff, e.g. `"v1.0.0"` | :x:                | `null`         |
 | `output_file` | Name of the output file, requires `write_file` == true           | :x:                | `CHANGELOG.md` |
 | `write_file`  | Write output to file                                             | :x:                | `false`        |
 
 ### Outputs
 - `changelog`: Changelog content if `outputFile` is not set
+
+### Local Development
+
+You can execute the action locally by running the following command: \
+each parameter is passed as an environment variable.
+
+
+```bash
+# make sure to have git-chglog locally installed
+INPUT_CONFIG_PATH=.chglog INPUT_NEXT_TAG=1.0.0 ./entrypoint.sh
+```
 
 ## Versioning
 
