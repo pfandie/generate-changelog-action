@@ -25,8 +25,8 @@ git config --global --add safe.directory "${GITHUB_WORKSPACE}"
 
 # Generate CHANGELOG based on settings
 echo "🔖 Generating CHANGELOG"
-echo "command: /usr/local/bin/git-chglog -c \"$INPUT_CONFIG_PATH/config.yml\" \"$next_tag\" \"$output_file\")"
-changelog=$(/usr/local/bin/git-chglog -c "${INPUT_CONFIG_PATH}/config.yml" "$next_tag" "$output_file")
+echo "command: /usr/local/bin/git-chglog -c \"$INPUT_CONFIG_PATH/config.yml\" $output_file \"$next_tag\")"
+changelog=$(/usr/local/bin/git-chglog -c "${INPUT_CONFIG_PATH}/config.yml" $output_file "$next_tag")
 
 # Print CHANGELOG to stdout
 echo "----------------------------------------------------------"
