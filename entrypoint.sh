@@ -17,7 +17,7 @@ fi
 # Set Output file
 if [[ "$INPUT_WRITE_FILE" == 'true' && -n "$INPUT_OUTPUT_FILE" ]]; then
   echo "ℹ️ Set file output to: $INPUT_OUTPUT_FILE"
-  output_file="--output '$INPUT_OUTPUT_FILE'"
+  output_file="--output $INPUT_OUTPUT_FILE"
 fi
 
 # Add Workspace to safe.directory to allow fetching git tags
