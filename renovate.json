@@ -1,7 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base",
+    "config:recommended",
     ":dependencyDashboard",
     ":prConcurrentLimit10",
     "schedule:weekends",
@@ -11,19 +11,27 @@
   "packageRules": [
     {
       "description": "Removes the `v` prefix from the version",
-      "matchPackageNames": ["git-chglog/git-chglog"],
+      "matchPackageNames": [
+        "git-chglog/git-chglog"
+      ],
       "extractVersion": "^v(?<version>.*)$",
       "automerge": false
     },
     {
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "matchCurrentVersion": "!/^0/",
       "automerge": true
     }
   ],
-  "regexManagers": [
+  "customManagers": [
     {
-      "fileMatch": ["^Dockerfile$"],
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^Dockerfile$/"
+      ],
       "matchStrings": [
         "ENV\\s+CHGLOG_VERSION=(?<currentValue>\\d+\\.\\d+\\.\\d+)"
       ],
